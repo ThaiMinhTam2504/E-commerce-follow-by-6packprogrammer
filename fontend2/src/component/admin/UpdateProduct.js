@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { updateProduct, clearErrors, getProductDetails } from "../../actions/productAction";
 import { useAlert } from "react-alert";
 import { Button } from "@material-ui/core";
+import { CircularProgress } from "@material-ui/core";
 import MetaData from "../layout/MetaData";
 import AccountTreeIcon from "@material-ui/icons/AccountTree";
 import DescriptionIcon from "@material-ui/icons/Description";
@@ -50,17 +51,16 @@ const UpdateProduct = () => {
     const productId = id;
 
     useEffect(() => {
-
-        if (product && product._id !== productId) {
+        if (!product || product._id !== productId) {
             dispatch(getProductDetails(productId));
         } else {
             setName(product.name);
             setDescription(product.description);
             setPrice(product.price);
             setCategory(product.category);
+            setStock(product.Stock);
             setOldImages(product.images);
         }
-
 
         if (error) {
             alert.error(error);
@@ -224,9 +224,9 @@ const UpdateProduct = () => {
                         <Button
                             id="createProductBtn"
                             type="submit"
-                            disabled={loading ? true : false}
+                            disabled={loading}
                         >
-                            Update
+                            {loading ? <CircularProgress size={24} color="primary" /> : "Update"}
                         </Button>
 
 

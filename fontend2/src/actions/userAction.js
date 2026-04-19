@@ -47,11 +47,16 @@ export const login = (email, password) => async (dispatch) => {
         const config = { headers: { "Content-Type": "application/json" } };
 
         const { data } = await axios.post(
-            `api/v1/login`,
+            `/api/v1/login`,
             { email, password },
             config
         );
         dispatch({ type: LOGIN_SUCCESS, payload: data.user });
+
+        // Persist user data locally for refresh restore
+        localStorage.setItem("user", JSON.stringify(data.user));
+        // Save userId to localStorage
+        localStorage.setItem("userId", data.user._id);
 
         // Load user's cart from localStorage
         let cartItems = JSON.parse(localStorage.getItem("cartItems")) || {};
@@ -98,13 +103,16 @@ export const loadUser = () => async (dispatch) => {
     try {
         dispatch({ type: LOAD_USER_REQUEST });
 
-        const { data } = await axios.get(`api/v1/me`);
+        const { data } = await axios.get(`/api/v1/me`);
 
         dispatch({ type: LOAD_USER_SUCCESS, payload: data.user });
+        localStorage.setItem("user", JSON.stringify(data.user));
         console.log("Respone from server loadUser", data);
     }
     catch (error) {
         console.log("Lỗi loadUser");
+        localStorage.removeItem("user");
+        localStorage.removeItem("userId");
         dispatch({ type: LOAD_USER_FAIL, payload: error.response.data.response });
     }
 };
@@ -131,6 +139,10 @@ export const logout = () => async (dispatch) => {
         await axios.get(`/api/v1/logout`);
 
         dispatch({ type: LOGOUT_SUCCESS });
+
+        // Remove persisted user info from localStorage
+        localStorage.removeItem("userId");
+        localStorage.removeItem("user");
     }
     catch (error) {
         dispatch({ type: LOGOUT_FAIL, payload: error.response.data.response });

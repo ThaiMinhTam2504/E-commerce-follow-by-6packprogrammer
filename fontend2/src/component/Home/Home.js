@@ -3,7 +3,7 @@ import { CiDesktopMouse2 } from "react-icons/ci";
 // import Product from "./ProductCard";
 import "./Home.css";
 import MetaData from "../layout/MetaData";
-import { clearErrors, getProductRandom } from "../../actions/productAction";
+import { clearErrors, getProduct } from "../../actions/productAction";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../layout/Loader/Loader";
 import { useAlert } from "react-alert";
@@ -33,7 +33,7 @@ const Home = () => {
             alert.error(error);
             dispatch(clearErrors());
         }
-        dispatch(getProductRandom());
+        dispatch(getProduct());
     }, [dispatch, alert, error]);
 
     return (
@@ -56,7 +56,11 @@ const Home = () => {
 
                 <div className="container" id="container">
 
-                    {products && products.map((product) => (<ProductCard key={product._id} product={product} />))}
+                    {products && products.length > 0 ? (
+                        products.map((product) => (<ProductCard key={product._id} product={product} />))
+                    ) : (
+                        <p>No products available</p>
+                    )}
 
                 </div>
             </Fragment>)}

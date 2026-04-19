@@ -122,7 +122,8 @@ exports.getAllProducts = catchAsyncErrors(async (req, res, next) => {
 
         const apiFeature = new ApiFeatures(Product.find(), req.query)
             .search()
-            .filter();
+            .filter()
+            .sort();
 
         let product = await apiFeature.query;
         let filteredProductsCount = product.length;
@@ -237,6 +238,10 @@ exports.getAdminProducts = catchAsyncErrors(async (req, res, next) => {
 //Get Product Details
 
 exports.getProductDetails = catchAsyncErrors(async (req, res, next) => {
+    if (!req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
+        return next(new ErrorHander("Invalid product ID", 400));
+    }
+
     const product = await Product.findById(req.params.id);
     if (!product) {
         return next(new ErrorHander("Product Not Found", 404));

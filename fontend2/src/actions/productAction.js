@@ -38,14 +38,23 @@ export const getProduct = (keyword = "", currentPage = 1, price = [0, 25000], ca
 
         dispatch({ type: ALL_PRODUCT_REQUEST });
 
-        let link = `/api/v1/products?keyword=${keyword}&page=${currentPage}&price[gte]=${price[0]}&price[lte]=${price[1]}&ratings[gte]=${ratings}`;
+        let link = `/api/v1/products?keyword=${keyword}&page=${currentPage}&price[gte]=${price[0]}&price[lte]=${price[1]}`;
+
+        if (ratings > 0) {
+            link += `&ratings[gte]=${ratings}`;
+        }
 
         if (category) {
-            link = `/api/v1/products?keyword=${keyword}&page=${currentPage}&price[gte]=${price[0]}&price[lte]=${price[1]}&category=${category}&ratings[gte]=${ratings}`;
+            link = `/api/v1/products?keyword=${keyword}&page=${currentPage}&price[gte]=${price[0]}&price[lte]=${price[1]}&category=${category}`;
+            if (ratings > 0) {
+                link += `&ratings[gte]=${ratings}`;
+            }
         }
 
 
         const { data } = await axios.get(link);
+
+        console.log("getProduct API response:", data);
 
         dispatch({
             type: ALL_PRODUCT_SUCCESS,

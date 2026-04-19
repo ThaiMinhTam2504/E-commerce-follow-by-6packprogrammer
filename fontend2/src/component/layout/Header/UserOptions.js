@@ -30,7 +30,7 @@ const UserOptions = ({ user }) => {
     const options = [
         { icon: <ListAltIcon />, name: "Orders", func: orders },
         { icon: <PersonIcon />, name: "Profile", func: account },
-        { icon: <ShoppingCartIcon style={{ color: cartItems.length > 0 ? "tomato" : "unset" }} />, name: `Cart(${cartItems.length})`, func: cart },
+        { icon: <ShoppingCartIcon style={{ color: (cartItems?.length > 0) ? "tomato" : "unset" }} />, name: `Cart(${cartItems?.length || 0})`, func: cart },
         { icon: <ExitToAppIcon />, name: "Logout", func: logoutUser },
     ];
 

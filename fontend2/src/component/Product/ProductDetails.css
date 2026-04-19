@@ -101,7 +101,8 @@
 .detailsBlock-3-1-1>input {
     border: none;
     padding: 0.5vmax;
-    width: 1vmax;
+    width: 3vmax;
+    min-width: 50px;
     text-align: center;
     outline: none;
     font: 400 0.8vmax "Roboto";
@@ -227,6 +228,25 @@
     text-align: center;
     color: rgba(0, 0, 0, 0.548);
 
+}
+
+.productNotFound {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 50vh;
+    text-align: center;
+    color: rgba(0, 0, 0, 0.7);
+}
+
+.productNotFound h2 {
+    font: 500 2vmax "Roboto";
+    margin-bottom: 1vmax;
+}
+
+.productNotFound p {
+    font: 300 1.2vmax "Roboto";
 }
 
 /* @media screen and(max-width:600px) {

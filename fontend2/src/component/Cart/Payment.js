@@ -12,6 +12,7 @@ import EventIcon from "@material-ui/icons/Event";
 import VpnKeyIcon from "@material-ui/icons/VpnKey";
 import { useNavigate } from "react-router-dom";
 import { clearErrors, createOrder } from "../../actions/orderAction";
+import { clearCart } from "../../actions/cartAction";
 
 
 
@@ -89,6 +90,7 @@ const Payment = () => {
                     };
 
                     dispatch(createOrder(order));
+                    dispatch(clearCart(user._id));
                     navigate("/success");
                 } else {
                     alert.error("There's some issue with proccessing payment");

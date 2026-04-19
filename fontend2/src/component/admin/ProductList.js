@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import "./ProductList.css";
 import { useSelector, useDispatch } from "react-redux";
 import { getAdminProduct, clearErrors, deleteProduct } from "../../actions/productAction";
@@ -8,11 +8,13 @@ import { Button } from "@material-ui/core";
 import MetaData from "../layout/MetaData";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
+import WarningIcon from "@material-ui/icons/Warning";
 import Slidebar from "./Slidebar";
 import { DataGrid } from "@material-ui/data-grid"
 import { useNavigate } from "react-router-dom";
 import { DELETE_PRODUCT_RESET } from "../../constants/productConstants";
 import Loader from "../layout/Loader/Loader";
+import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@material-ui/core";
 
 const ProductList = () => {
 
@@ -23,8 +25,22 @@ const ProductList = () => {
 
     const { error: deleteError, isDeleted } = useSelector((state) => state.product);
 
+    const [open, setOpen] = useState(false);
+    const [deleteId, setDeleteId] = useState(null);
+
     const deleteProductHandler = (id) => {
-        dispatch(deleteProduct(id));
+        setDeleteId(id);
+        setOpen(true);
+    };
+
+    const confirmDelete = () => {
+        dispatch(deleteProduct(deleteId));
+        setOpen(false);
+    };
+
+    const cancelDelete = () => {
+        setOpen(false);
+        setDeleteId(null);
     };
 
     useEffect(() => {
@@ -78,10 +94,10 @@ const ProductList = () => {
             renderCell: (params) => {
                 return (
                     <Fragment>
-                        <Link to={`/admin/product/${params.getValue(params.id, "id")}`}>
+                        <Link to={`/admin/product/${params.row.id}`}>
                             <EditIcon />
                         </Link>
-                        <Button onClick={() => deleteProductHandler(params.getValue(params.id, "id"))}>
+                        <Button onClick={() => deleteProductHandler(params.row.id)}>
                             <DeleteIcon />
                         </Button>
 
@@ -120,11 +136,36 @@ const ProductList = () => {
                         disableSelectionOnClick
                         className="productListTable"
                         autoHeight
+                        key={products.length}
                     />
                     ) : (<Loader />)}
                 </div>
             </div>
 
+            <Dialog
+                open={open}
+                onClose={cancelDelete}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title" style={{ display: 'flex', alignItems: 'center', color: '#f44336' }}>
+                    <WarningIcon style={{ marginRight: 8 }} />
+                    Delete Product
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        Are you sure you want to delete this product? This action cannot be undone.
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={cancelDelete} color="primary">
+                        Cancel
+                    </Button>
+                    <Button onClick={confirmDelete} color="secondary" autoFocus>
+                        Delete
+                    </Button>
+                </DialogActions>
+            </Dialog>
 
         </Fragment>
     )

@@ -48,6 +48,7 @@ export const productsReducer = (state = { products: [] }, action) => {
                 products: [],
             };
         case ALL_PRODUCT_SUCCESS:
+            console.log("ALL_PRODUCT_SUCCESS payload:", action.payload);
             return {
                 loading: false,
                 products: action.payload.products,
@@ -164,7 +165,7 @@ export const productReducer = (state = {}, action) => {
 };
 
 
-export const productDetailsReducer = (state = { product: {} }, action) => {
+export const productDetailsReducer = (state = { product: null }, action) => {
 
 
     switch (action.type) {
@@ -183,6 +184,7 @@ export const productDetailsReducer = (state = { product: {} }, action) => {
             return {
                 loading: false,
                 error: action.payload,
+                product: null,
             };
         case CLEAR_ERRORS:
             return {

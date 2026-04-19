@@ -44,6 +44,17 @@ class ApiFeatures {
 
     }
 
+    sort() {
+        if (this.queryStr.sort) {
+            const sortBy = this.queryStr.sort.split(",").join(" ");
+            this.query = this.query.sort(sortBy);
+        } else {
+            // Default sort by ratings descending and numOfReviews descending
+            this.query = this.query.sort("-ratings -numOfReviews");
+        }
+        return this;
+    }
+
     pagination(resultPerPage) {
         const currentPage = Number(this.queryStr.page) || 1;
 

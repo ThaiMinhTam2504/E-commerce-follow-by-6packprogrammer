@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 
 
 const categories = [
+    "All",
     "Laptop",
     "Footwear",
     "Bottom",
@@ -45,7 +46,7 @@ const Products = (/*{ match }*/) => {
 
     const [category, setCategory] = useState("");
 
-    const [ratings, setRatings] = useState(0)
+    const [ratings, setRatings] = useState(0);
 
     const { products,
         loading,
@@ -84,12 +85,6 @@ const Products = (/*{ match }*/) => {
 
 
 
-    const priceHandler = (event, newPrice) => {
-        setPrice(newPrice);
-
-    };
-
-
     useEffect(() => {
 
         // if (isAuthenticated === false) {
@@ -115,11 +110,15 @@ const Products = (/*{ match }*/) => {
         {loading ? <Loader /> : (
             <Fragment>
                 <MetaData title="PRODUCT -- ECOMMERCE" />
-                <h2 className="productsHeading">Products</h2>
+                <h2 className="productsHeading">Our Products</h2>
                 <div className="products">
-                    {products && products.map((product) => (
-                        <ProductCard key={product._id} product={product} />
-                    ))}
+                    {products && products.length > 0 ? (
+                        products.map((product) => (
+                            <ProductCard key={product._id} product={product} />
+                        ))
+                    ) : (
+                        !loading && <h3>No products found</h3>
+                    )}
                 </div>
 
 
@@ -128,14 +127,14 @@ const Products = (/*{ match }*/) => {
                 {/*{*/}  <div className="filterBox">
                     <Typography>Price</Typography>
                     <Slider value={price}
-                        onChange={priceHandler}
+                        onChange={(event, newPrice) => {
+                            setPrice(newPrice);
+                        }}
                         valueLabelDisplay="auto"
                         aria-labelledby="range-slider"
                         min={0}
-                        max={25000}
-                    >
-
-                    </Slider>
+                        max={5000}
+                    ></Slider>
 
 
                     <Typography>Categories</Typography>
@@ -143,7 +142,7 @@ const Products = (/*{ match }*/) => {
                         {categories.map((category) => (
                             <li className="category-link"
                                 key={category}
-                                onClick={() => setCategory(category)}
+                                onClick={() => setCategory(category === "All" ? "" : category)}
                             // onClick={() => handleCategoryChange(category)}
                             >
                                 {category}
@@ -189,8 +188,9 @@ const Products = (/*{ match }*/) => {
                     </div>
                 )}
             </Fragment>
-        )}
-    </Fragment>
+        )
+        }
+    </Fragment >
     );
 };
 

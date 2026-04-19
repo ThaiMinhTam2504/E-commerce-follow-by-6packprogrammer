@@ -19,6 +19,7 @@ import {
     DELETE_ORDER_REQUEST,
     DELETE_ORDER_SUCCESS,
 } from "../constants/orderConstants";
+import { CLEAR_CART } from "../constants/cartConstants";
 import axios from "axios";
 
 //Create Order
@@ -33,6 +34,9 @@ export const createOrder = (order) => async (dispatch) => {
         const { data } = await axios.post("/api/v1/order/new", order, config);
 
         dispatch({ type: CREATE_ORDER_SUCCESS, payload: data });
+
+        // Clear cart after successful order
+        dispatch({ type: CLEAR_CART });
     }
     catch (error) {
         dispatch({

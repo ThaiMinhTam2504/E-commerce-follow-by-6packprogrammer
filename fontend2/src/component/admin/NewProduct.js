@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { createProduct, clearErrors } from "../../actions/productAction";
 import { useAlert } from "react-alert";
 import { Button } from "@material-ui/core";
+import { CircularProgress } from "@material-ui/core";
 import MetaData from "../layout/MetaData";
 import AccountTreeIcon from "@material-ui/icons/AccountTree";
 import DescriptionIcon from "@material-ui/icons/Description";
@@ -58,7 +59,7 @@ const NewProduct = () => {
     const createProductSubmitHandler = (e) => {
         e.preventDefault();
 
-        if (!name || !price || !description || !category || !Stock || !images.length === 0) {
+        if (!name || !price || !description || !category || !Stock || !images?.length === 0) {
             alert.error("please fill in all fields");
             return;
         }
@@ -91,7 +92,7 @@ const NewProduct = () => {
         //     myForm.append(`avatar[${index}]`, image);
         // });
 
-        if (images && images.length > 0) {
+        if (images && images?.length > 0) {
             images.forEach((image) => {
                 myForm.append(`images`, image);
                 // console.log("cc", image);
@@ -103,7 +104,7 @@ const NewProduct = () => {
 
 
 
-        if (images.length === 0) {
+        if (images?.length === 0) {
             alert.error("Please select at least 1 image")
             return;
         }
@@ -125,7 +126,7 @@ const NewProduct = () => {
 
 
         //Kiểm tra nếu không có file nào được chọn
-        if (files.length === 0) {
+        if (files?.length === 0) {
             return;
         }
 
@@ -258,9 +259,9 @@ const NewProduct = () => {
                         <Button
                             id="createProductBtn"
                             type="submit"
-                            disabled={loading ? true : false}
+                            disabled={loading}
                         >
-                            Create
+                            {loading ? <CircularProgress size={24} color="primary" /> : "Create"}
                         </Button>
 
 

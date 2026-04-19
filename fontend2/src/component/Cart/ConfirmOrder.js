@@ -16,8 +16,8 @@ const ConfirmOrder = () => {
         (acc, item) => acc + item.quantity * item.price,
         0
     );
-    const shippingCharges = subtotal > 1000 ? 0 : 200;
-    const tax = subtotal * 0.18;
+    const shippingCharges = subtotal > 1000 ? 0 : 50;
+    const tax = subtotal * 0.1;
     const totalPrice = subtotal + tax + shippingCharges;
     const proceedToPayment = () => {
         /* data*/ let data = {
@@ -105,7 +105,7 @@ const ConfirmOrder = () => {
                                 <span>$ {shippingCharges}</span>
                             </div>
                             <div>
-                                <p>GST:</p>
+                                <p>VAT:</p>
                                 <span>$ {tax}</span>
                             </div>
                         </div>
@@ -119,32 +119,21 @@ const ConfirmOrder = () => {
 
 
                         <form className="formCheckout">
-                            <div>
-                                <input
-                                    type="radio"
-                                    id="visa"
-                                    name="paymentMethod"
-                                    value="VISA"
-                                    checked={paymentMethod === "VISA"}
-                                    onChange={(e) => setPaymentMethod(e.target.value)}
-                                />
-                                <label for="visa">VISA</label>
+                            <div className={`paymentOption ${paymentMethod === "VISA" ? "selected" : ""}`}>
+                                <label htmlFor="visa">
+                                    <input
+                                        type="radio"
+                                        id="visa"
+                                        name="paymentMethod"
+                                        value="VISA"
+                                        checked={paymentMethod === "VISA"}
+                                        onChange={(e) => setPaymentMethod(e.target.value)}
+                                    />
+                                    <span className="paymentIcon">💳</span>
+                                    <span className="paymentLabelText">Thanh toán bằng VISA</span>
+                                </label>
                             </div>
-                            <div>
-                                <input
-                                    type="radio"
-                                    id="momo"
-                                    name="paymentMethod"
-                                    value="MOMO"
-                                    checked={paymentMethod === "MOMO"}
-                                    onChange={(e) => setPaymentMethod(e.target.value)}
-                                />
-                                <label for="momo">MOMO</label>
-                            </div>
-
-
                         </form>
-
 
                         <button onClick={proceedToPayment}>Proceed To Payment</button>
                     </div>

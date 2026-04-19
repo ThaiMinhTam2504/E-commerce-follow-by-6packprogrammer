@@ -19,6 +19,14 @@
 /fontend2/.env.test.local
 /fontend2/.env.production.local
 
+
+#
+
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+#ignore example files
+
+example_explanation.js
+redux_flow_example.js

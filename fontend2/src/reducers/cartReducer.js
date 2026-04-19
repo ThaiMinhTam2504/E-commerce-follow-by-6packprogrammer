@@ -1,5 +1,5 @@
-import { ADD_TO_CART, REMOVE_CART_ITEM, SAVE_SHIPPING_INFO, LOAD_USER_CART, LOAD_USER_SHIPPING_INFO } from "../constants/cartConstants";
-// import { LOGOUT_SUCCESS } from "../constants/userConstants"
+import { ADD_TO_CART, REMOVE_CART_ITEM, SAVE_SHIPPING_INFO, LOAD_USER_CART, LOAD_USER_SHIPPING_INFO, CLEAR_CART } from "../constants/cartConstants";
+import { LOGOUT_SUCCESS } from "../constants/userConstants"
 
 export const cartReducer = (state = { cartItems: [], shippingInfo: {} }, action) => {
     switch (action.type) {
@@ -29,12 +29,18 @@ export const cartReducer = (state = { cartItems: [], shippingInfo: {} }, action)
                 cartItems: action.payload,
             };
 
-        // case LOGOUT_SUCCESS:
-        //     return {
-        //         ...state,
-        //         cartItems: [],
-        //         shippingInfo: {},
-        //     };
+        case LOGOUT_SUCCESS:
+            return {
+                ...state,
+                cartItems: [],
+                shippingInfo: {},
+            };
+
+        case CLEAR_CART:
+            return {
+                ...state,
+                cartItems: [],
+            };
 
         case LOAD_USER_SHIPPING_INFO:
             return {

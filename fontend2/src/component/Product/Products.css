@@ -16,6 +16,13 @@
     min-height: 30vh;
 }
 
+.products h3 {
+    text-align: center;
+    font: 500 2vmax "Roboto";
+    color: rgba(0, 0, 0, 0.5);
+    margin: 4vmax;
+}
+
 .paginationBox {
     display: flex;
     justify-content: center;
